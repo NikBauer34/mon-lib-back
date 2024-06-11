@@ -8,22 +8,25 @@ import {JwtService} from "@nestjs/jwt";
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/user.model';
 import { Category } from 'src/category/category.model';
+import { MuseumService } from 'src/museum/museum.service';
 @Injectable()
 export class EventService {
   constructor(@InjectModel(Event.name) private eventModel: Model<Event>,
               private categoryService: CategoryService,
             private jwtService: JwtService,
-          private userService: UserService) {}
+          private userService: UserService,
+          private museumService: MuseumService) {}
 
   async getAll() {
     const events = await this.eventModel.find({})
     return events
   }
   async create(dto: CreateEventDto, auth: string) {
-    console.log(dto)
     const category = await this.categoryService.findByName(dto.category)
-    const user = this.jwtService.verify(auth, {secret: 'secret2'})
-    const event = await this.eventModel.create({...dto, category: category._id, organizer: user._id})
+    const museum = this.jwtService.verify(auth, {secret: 'secret2'})
+
+    const event = await this.eventModel.create({...dto, category: category._id, organizer: museum._id})
+    let m = await this.museumService.addEvent(museum._id, event._id)
     console.log(event)
     return event
   }

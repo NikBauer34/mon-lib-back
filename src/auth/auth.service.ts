@@ -92,7 +92,7 @@ export class AuthService {
     console.log(dto)
     const museum = await this.museumService.findByUsername(dto.username)
     console.log(museum)
-    if (!museum) throw new UnauthorizedException({messge: 'Некорректный никнейм или пароль'})
+    if (!museum) throw new UnauthorizedException({message: 'Некорректный никнейм или пароль'})
     const passwordEquals = await bcrypt.compare(dto.password, museum.password)
     if (museum && passwordEquals) {
       return museum;

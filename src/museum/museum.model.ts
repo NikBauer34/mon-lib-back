@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument } from "mongoose";
+import mongoose, { HydratedDocument, Types } from "mongoose";
 
 export type MuseumDocument =HydratedDocument<Museum>
 
@@ -10,6 +10,9 @@ export class Museum {
 
   @Prop()
   password: string
+
+  @Prop([{type: mongoose.Schema.Types.ObjectId, ref: 'Event'}])
+  events: Types.ObjectId[]
 }
 
 export const MuseumSchema = SchemaFactory.createForClass(Museum)

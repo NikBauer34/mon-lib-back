@@ -14,7 +14,7 @@ export class MuseumService {
   }
   async create(dto: CreateMuseumDto) {
     const hashPassword = bcrypt.hashSync(dto.password, 5)
-    const order = await this.museumModel.create({...dto, password: hashPassword})
+    const order = await this.museumModel.create({...dto, password: hashPassword, events: []})
     return order
   }
   async findById(_id: Types.ObjectId) {
@@ -24,5 +24,12 @@ export class MuseumService {
   async findByUsername(username: string) {
     const museum = await this.museumModel.findOne({username})
     return museum
+  }
+  async addEvent(museum_id: Types.ObjectId, event_id: Types.ObjectId) {
+    let museum = await this.museumModel.findById(museum_id)
+    museum.events.push(event_id)
+    await museum.save()
+    return museum
+
   }
 }

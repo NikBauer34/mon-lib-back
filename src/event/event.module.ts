@@ -7,8 +7,9 @@ import { AuthModule } from 'src/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import {CategoryModule} from '../category/category.module'
 import { UserModule } from 'src/user/user.module';
+import { MuseumModule } from 'src/museum/museum.module';
 @Module({
-  imports: [MongooseModule.forFeature([{name: Event.name, schema: EventSchema}]), JwtModule.register({}), AuthModule, CategoryModule, UserModule],
+  imports: [MongooseModule.forFeature([{name: Event.name, schema: EventSchema}]), JwtModule.register({}), AuthModule, CategoryModule, UserModule, MuseumModule],
   providers: [EventService],
   controllers: [EventController],
   exports: [EventService]

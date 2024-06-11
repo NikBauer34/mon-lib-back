@@ -24,4 +24,8 @@ export class CategoryService {
     const category = await this.categoryModel.findById(_id)
     return category
   }
+  async delete(_id: Types.ObjectId) {
+    const cat = await this.categoryModel.findByIdAndDelete(_id)
+    return cat
+  }
 }
