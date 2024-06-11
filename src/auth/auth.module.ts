@@ -5,11 +5,13 @@ import { UserModule } from '../user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TokenModule } from 'src/token/token.module';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { MuseumModule } from 'src/museum/museum.module';
 
 @Module({
   imports: [UserModule,
     JwtModule.register({}),
-    TokenModule
+    TokenModule,
+    MuseumModule
   ],
   providers: [AuthService, JwtAuthGuard],
   controllers: [AuthController],

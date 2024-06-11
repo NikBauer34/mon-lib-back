@@ -10,12 +10,13 @@ import { CategoryModule } from './category/category.module';
 import { EventModule } from './event/event.module';
 import { OrderModule } from './order/order.module';
 import { BucketModule } from './bucket/bucket.module';
+import { MuseumModule } from './museum/museum.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`
     }),
-    MongooseModule.forRoot(`${process.env.db_url}`),
+    MongooseModule.forRoot(`mongodb://127.0.0.1:27017/nest_tutorial`),
     TokenModule,
     UserModule,
     AuthModule,
@@ -23,6 +24,7 @@ import { BucketModule } from './bucket/bucket.module';
     EventModule,
     OrderModule,
     BucketModule,
+    MuseumModule,
   ],
   controllers: [AppController],
   providers: [AppService],

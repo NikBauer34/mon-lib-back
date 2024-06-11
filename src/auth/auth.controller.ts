@@ -12,13 +12,12 @@ export class AuthController {
     return this.authService.registration(dto)
   }
   @Post('/login')
-  async login(@Body() dto: CreateUserDto) {
+  async login(@Body() dto: {username: string, password: string, role: 'museum' | 'user'}) {
     console.log('here')
     return this.authService.login(dto)
   }
-  @Get('/refresh')
-  async refresh(@Headers() headers: Record<string, string>) {
-    console.log(headers.authorization)
-    return this.authService.refresh(headers.authorization)
+  @Post('/refresh')
+  async refresh(@Body() dto: {refreshToken: string, role: string}) {
+    return this.authService.refresh(dto.refreshToken, dto.role)
   }
 }

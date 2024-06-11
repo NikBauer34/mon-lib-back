@@ -6,16 +6,25 @@ import * as bcrypt from 'bcrypt'
 import { User } from 'src/user/user.model';
 import { Types } from 'mongoose';
 import { TokenService } from 'src/token/token.service';
+import { MuseumService } from 'src/museum/museum.service';
+import { CreateMuseumDto } from 'src/museum/dto/CreateMuseum.dto';
 @Injectable()
 export class AuthService {
   constructor(private userService: UserService,
               private jwtService: JwtService,
-              private tokenService: TokenService
+              private tokenService: TokenService,
+              private museumService: MuseumService
   ) {}
-  async login(dto: CreateUserDto) {
-    console.log('here')
-    const user = await this.validateUser(dto)
-    return this.generateTokens(user)
+  async login(dto: {username: string, password: string, role: 'museum' | 'user'}) {
+    if (dto.role == 'user') {
+      const user = await this.validateUser(dto)
+      const tokens = this.generateTokens(user, 'user')
+      return tokens 
+    } else {
+      const museum = await this.validateMuseum(dto)
+      const tokens = this.generateTokens(museum, 'museum')
+      return tokens
+    }
   }
   async registration(dto: CreateUserDto) {
     const candidate = await this.userService.findByUsername(dto.username)
@@ -24,11 +33,11 @@ export class AuthService {
     }
     const hashPassword = await bcrypt.hash(dto.password, 5)
     const user = await this.userService.create({...dto, password: hashPassword})
-    const tokens = await this.generateTokens(user)
+    const tokens = await this.generateTokens(user, 'user')
     await this.tokenService.saveToken(user._id, tokens.refreshToken)
     return {...tokens}
   }
-  async refresh(refreshToken: string) {
+  async refresh(refreshToken: string, role: string) {
     if (!refreshToken) {
       console.log('Рефреш-токена нет')
       throw new UnauthorizedException({message: 'Рефреш-токена нет!'})
@@ -40,13 +49,21 @@ export class AuthService {
     // }
     const userData = await this.jwtService.verify(refreshToken, {secret: 'secret2'})
     console.log(userData)
-    const user = await this.userService.findById(userData._id)
-    const tokens = await this.generateTokens(user)
+    if (role == 'user') {
+      const user = await this.userService.findById(userData._id)
+    const tokens = await this.generateTokens(user, 'user')
     await this.tokenService.saveToken(user._id, tokens.refreshToken)
     console.log('ok')
     return {...tokens}
+    } else {
+      const user = await this.museumService.findById(userData._id)
+    const tokens = await this.generateTokens(user, 'museum')
+    await this.tokenService.saveToken(user._id, tokens.refreshToken)
+    console.log('ok')
+    return {...tokens}
+    }
   }
-  private async generateTokens(user: User & {_id: Types.ObjectId}) {
+  private async generateTokens(user: any, role: string) {
     const payload = {_id: user._id}
     return {
         acccessToken: await this.jwtService.signAsync(payload, {
@@ -58,7 +75,8 @@ export class AuthService {
           secret: 'secret2'
         }),
         expiresIn: new Date().setTime(new Date().getTime() + 5 * 60 * 1000),
-        _id: user._id
+        role
+        
     }
   }
   private async validateUser(userDto: CreateUserDto) {
@@ -69,5 +87,16 @@ export class AuthService {
         return user;
     }
     throw new UnauthorizedException({message: 'Некорректный никнейм или пароль'})
-}
+  }
+  private async validateMuseum(dto: CreateMuseumDto) {
+    console.log(dto)
+    const museum = await this.museumService.findByUsername(dto.username)
+    console.log(museum)
+    if (!museum) throw new UnauthorizedException({messge: 'Некорректный никнейм или пароль'})
+    const passwordEquals = await bcrypt.compare(dto.password, museum.password)
+    if (museum && passwordEquals) {
+      return museum;
+  }
+  throw new UnauthorizedException({message: 'Некорректный никнейм или пароль'})
+  }
 }
