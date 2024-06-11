@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose, { HydratedDocument } from "mongoose";
+import mongoose, { HydratedDocument, Types } from "mongoose";
 import { Category } from "src/category/category.model";
 import { User } from "src/user/user.model";
 
@@ -37,9 +37,9 @@ export class Event {
   url: string
 
   @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Category'})
-  category: Category
+  category: Types.ObjectId
 
   @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'User'})
-  organizer: User
+  organizer: Types.ObjectId
 }
 export const EventSchema = SchemaFactory.createForClass(Event)

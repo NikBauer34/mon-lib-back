@@ -13,6 +13,7 @@ export class AuthController {
   }
   @Post('/login')
   async login(@Body() dto: CreateUserDto) {
+    console.log('here')
     return this.authService.login(dto)
   }
   @Get('/refresh')

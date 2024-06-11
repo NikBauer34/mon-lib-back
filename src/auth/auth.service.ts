@@ -33,11 +33,11 @@ export class AuthService {
       console.log('Рефреш-токена нет')
       throw new UnauthorizedException({message: 'Рефреш-токена нет!'})
     }
-    const takenFromDb = await this.tokenService.findToken(refreshToken)
-    if (!takenFromDb) {
-      console.log('Токена не существует')
-      throw new UnauthorizedException({message: 'Такого токена не существует'})
-    }
+    // const takenFromDb = await this.tokenService.findToken(refreshToken)
+    // if (!takenFromDb) {
+    //   console.log('Токена не существует')
+    //   throw new UnauthorizedException({message: 'Такого токена не существует'})
+    // }
     const userData = await this.jwtService.verify(refreshToken, {secret: 'secret2'})
     console.log(userData)
     const user = await this.userService.findById(userData._id)
@@ -58,6 +58,7 @@ export class AuthService {
           secret: 'secret2'
         }),
         expiresIn: new Date().setTime(new Date().getTime() + 5 * 60 * 1000),
+        _id: user._id
     }
   }
   private async validateUser(userDto: CreateUserDto) {
