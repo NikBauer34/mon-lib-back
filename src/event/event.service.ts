@@ -115,4 +115,24 @@ export class EventService {
   async upload(buffer: Buffer, name: string) {
     console.log('upl')
   }
+  async getLatest(museum_title: string, limit: number, page: number, regex: string) {
+    const museum = await this.museumService.findByTitle(museum_title)
+    const conditions = {organizer: museum._id}
+    const skipAmount = (page-1) * limit
+    const eventsQuery = await this.eventModel.find(conditions)
+      .sort({ createdAt: 'desc' })
+      .where('title').regex(regex)
+      .skip(skipAmount)
+      .limit(limit)
+      
+    let events = await Promise.all(eventsQuery.map(async (el) => {
+      const category = await this.categoryService.findById(el.category)
+      const organizer = await this.museumService.findById(el.organizer)
+      return {el, category, organizer}
+    }))
+    console.log(eventsQuery)
+    const eventsCount = await this.eventModel.countDocuments(conditions)
+    console.log(eventsCount)
+    return {data: events, totalPages: Math.ceil(eventsCount/limit)}
+  }
 }

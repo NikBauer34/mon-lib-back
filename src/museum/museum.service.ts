@@ -10,6 +10,7 @@ export class MuseumService {
 
   async getAll() {
     const orders = await this.museumModel.find({})
+    console.log(orders)
     return orders
   }
   async create(dto: CreateMuseumDto) {
@@ -23,6 +24,10 @@ export class MuseumService {
   }
   async findByUsername(username: string) {
     const museum = await this.museumModel.findOne({username})
+    return museum
+  }
+  async findByTitle(title: string) {
+    const museum = await this.museumModel.findOne({title})
     return museum
   }
   async addEvent(museum_id: Types.ObjectId, event_id: Types.ObjectId) {

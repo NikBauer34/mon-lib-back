@@ -52,4 +52,9 @@ export class EventController {
   getEventsByUser(@Body() dto: {userId: Types.ObjectId, limit: number, page: number}) {
     return this.eventService.getEventsByUser(dto.userId, dto.limit, dto.page)
   }
+  @Post('/get-latest')
+  getLatest(@Body() dto: {museum: string,  page: string, limit: number, regex: string}) {
+    console.log(dto)
+    return this.eventService.getLatest(dto.museum, dto.limit, Number(dto.page), dto.regex)
+  }
 }
