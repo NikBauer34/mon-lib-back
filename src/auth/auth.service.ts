@@ -15,8 +15,8 @@ export class AuthService {
               private tokenService: TokenService,
               private museumService: MuseumService
   ) {}
-  async login(dto: {username: string, password: string, role: 'museum' | 'user'}) {
-    if (dto.role == 'user') {
+  async login(dto: {username: string, password: string}, role: 'museum' | 'user') {
+    if (role == 'user') {
       const user = await this.validateUser(dto)
       const tokens = this.generateTokens(user, 'user')
       return tokens 
@@ -88,7 +88,7 @@ export class AuthService {
     }
     throw new UnauthorizedException({message: 'Некорректный никнейм или пароль'})
   }
-  private async validateMuseum(dto: CreateMuseumDto) {
+  private async validateMuseum(dto: {username: string, password: string}) {
     console.log(dto)
     const museum = await this.museumService.findByUsername(dto.username)
     console.log(museum)

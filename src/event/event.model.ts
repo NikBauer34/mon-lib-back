@@ -1,4 +1,4 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory, raw } from "@nestjs/mongoose";
 import mongoose, { HydratedDocument, Types } from "mongoose";
 import { Category } from "src/category/category.model";
 import { User } from "src/user/user.model";
@@ -21,12 +21,15 @@ export class Event {
   @Prop()
   imageURL: string
 
-  @Prop({default: Date.now()})
-  startDateTime: Date
-
-  @Prop({default: Date.now()})
-  endDateTime: Date
-
+  @Prop(raw({
+    monday: [{startDate: Date, endDate: Date}], 
+    tuesday: [{startDate: Date, endDate: Date}], 
+    wednesday: [{startDate: Date, endDate: Date}], 
+    thursday: [{startDate: Date, endDate: Date}], 
+    friday: [{startDate: Date, endDate: Date}], 
+    saturday: [{startDate: Date, endDate: Date}], 
+    sunday: [{startDate: Date, endDate: Date}]}))
+  days: Record<'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday', [{startDate: Date, endDate: Date}]>
   @Prop()
   price: string
 
@@ -34,7 +37,7 @@ export class Event {
   isFree: boolean
 
   @Prop({default: ''})
-  url: string
+  phone: string
 
   @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Category'})
   category: Types.ObjectId

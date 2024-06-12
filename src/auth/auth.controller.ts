@@ -14,7 +14,7 @@ export class AuthController {
   @Post('/login')
   async login(@Body() dto: {username: string, password: string, role: 'museum' | 'user'}) {
     console.log('here')
-    return this.authService.login(dto)
+    return this.authService.login({username: dto.username, password: dto.password}, dto.role)
   }
   @Post('/refresh')
   async refresh(@Body() dto: {refreshToken: string, role: string}) {

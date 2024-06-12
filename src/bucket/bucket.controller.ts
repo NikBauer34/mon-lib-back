@@ -6,11 +6,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class BucketController {
   constructor(private bucketService: BucketService) {}
 
-  @Post('upload')
+  @Post('/upload')
   @UseInterceptors(FileInterceptor('image'))
   uploadImage(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
     console.log('here')
-    console.log(req)
+    console.log(file)
     return this.bucketService.uploadImage(file.buffer, file.originalname)
   }
 }

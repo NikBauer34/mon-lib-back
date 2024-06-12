@@ -6,6 +6,8 @@ export type MuseumDocument =HydratedDocument<Museum>
 @Schema()
 export class Museum {
   @Prop()
+  title: string
+  @Prop()
   username: string
 
   @Prop()

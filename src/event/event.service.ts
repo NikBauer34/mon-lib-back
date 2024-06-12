@@ -9,13 +9,24 @@ import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/user.model';
 import { Category } from 'src/category/category.model';
 import { MuseumService } from 'src/museum/museum.service';
+import EasyYandexS3 from 'easy-yandex-s3';
 @Injectable()
 export class EventService {
+  s3: EasyYandexS3;
   constructor(@InjectModel(Event.name) private eventModel: Model<Event>,
               private categoryService: CategoryService,
             private jwtService: JwtService,
           private userService: UserService,
-          private museumService: MuseumService) {}
+          private museumService: MuseumService) {
+            this.s3 = new EasyYandexS3({
+              auth: {
+                accessKeyId: 'YCAJESV0A49lEzhUCIA6ZjAJt',
+                secretAccessKey: 'YCNiAiNfe6LSBIh3jhM1BYz40ypab-cbfZAeXkOP'
+              },
+              Bucket: 'unilib-storage',
+              debug: process.env.NODE_ENV == 'development' ? true : false
+            })
+          }
 
   async getAll() {
     const events = await this.eventModel.find({})
@@ -80,8 +91,8 @@ export class EventService {
   }
   async getOrganizerData(_id: Types.ObjectId) {
     const event = await this.eventModel.findById(_id)
-    const user = await this.userService.findById(event.organizer)
-    return user
+    const museum = await this.museumService.findById(event.organizer)
+    return museum
   }
   async getEventsByUser(userId: Types.ObjectId, limit: number, page: number) {
     const conditions = {organizer: userId}
@@ -100,5 +111,8 @@ export class EventService {
     const eventsCount = await this.eventModel.countDocuments(conditions)
     console.log(eventsCount)
     return {data: events, totalPages: Math.ceil(eventsCount/limit)}
+  }
+  async upload(buffer: Buffer, name: string) {
+    console.log('upl')
   }
 }

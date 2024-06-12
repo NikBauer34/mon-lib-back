@@ -1,7 +1,8 @@
-import { Body, Controller, Post, Headers, Req, Get, Param, Query } from '@nestjs/common';
+import { Body, Controller, Post, Headers, Req, Get, Param, Query, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/createEvent.dto';
 import { Types } from 'mongoose';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('event')
 export class EventController {
