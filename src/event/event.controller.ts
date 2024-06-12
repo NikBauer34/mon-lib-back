@@ -28,9 +28,9 @@ export class EventController {
     console.log(dto)
     return this.eventService.update(id, dto.event)
   }
-  @Get('/delete/:id')
-  delete(@Param(':id') id: Types.ObjectId) {
-    return this.eventService.delete(id)
+  @Post('/delete/:id')
+  delete(@Body() dto: {eventId: Types.ObjectId}) {
+    return this.eventService.delete(dto.eventId)
   }
   @Post('/get_related')
   get_related(@Body()dto: {category: string, eventId: string, page: string, limit: number}) {
