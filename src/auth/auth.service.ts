@@ -19,6 +19,8 @@ export class AuthService {
     if (role == 'user') {
       const user = await this.validateUser(dto)
       const tokens = this.generateTokens(user, 'user')
+      console.log('hkv')
+      console.log(tokens)
       return tokens 
     } else {
       const museum = await this.validateMuseum(dto)
@@ -35,6 +37,7 @@ export class AuthService {
     const user = await this.userService.create({...dto, password: hashPassword})
     const tokens = await this.generateTokens(user, 'user')
     await this.tokenService.saveToken(user._id, tokens.refreshToken)
+    console.log({...tokens})
     return {...tokens}
   }
   async refresh(refreshToken: string, role: string) {

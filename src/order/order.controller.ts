@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Headers } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/createOrder.dto';
 import { Types } from 'mongoose';
@@ -17,5 +17,13 @@ export class OrderController {
   @Post('/get-orders-by-user')
   getOrdersByUser(@Body() dto: {userId: Types.ObjectId, limit: number, page: number}) {
     return this.orderService.getOrdersByUser(dto.userId, dto.limit, dto.page)
+  }
+  @Post('/get-orders-by-event')
+  getOrdersByEvent(@Body() dto: {eventId: Types.ObjectId, searchString: string}) {
+    return this.orderService.getOrdersByEvent(dto.eventId, dto.searchString)
+  }
+  @Post('is-subscribed')
+  isSubscribed(@Body() dto: {eventId: Types.ObjectId}, @Headers() headers: Record<string, string>) {
+    return this.orderService.isSubscribed(dto.eventId, headers.authorization)
   }
 }
