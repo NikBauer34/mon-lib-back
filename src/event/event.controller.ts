@@ -43,6 +43,10 @@ export class EventController {
     const _id = headers.authorization.split(' ')[1] as unknown as Types.ObjectId
     return this.eventService.isOrganizer(_id, header)
   }
+  @Post('/get-user-data')
+  getUserData(@Body() dto: {refresh: string}) {
+    return this.eventService.getUserData(dto.refresh)
+  }
   @Get('/organizer_data/:id')
   getOrganizerData(@Param('id') id: Types.ObjectId) {
     console.log('here')

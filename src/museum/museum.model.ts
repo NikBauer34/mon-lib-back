@@ -13,6 +13,18 @@ export class Museum {
   @Prop()
   password: string
 
+  @Prop()
+  description: string
+
+  @Prop()
+  descriptionExt: string
+
+  @Prop()
+  primaryImage: string
+
+  @Prop({default: [], type: [String]})
+  galleryImages: string[]
+
   @Prop([{type: mongoose.Schema.Types.ObjectId, ref: 'Event'}])
   events: Types.ObjectId[]
 }

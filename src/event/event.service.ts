@@ -135,4 +135,12 @@ export class EventService {
     console.log(eventsCount)
     return {data: events, totalPages: Math.ceil(eventsCount/limit)}
   }
+  async getUserData(access: string) {
+    if (!access) {
+      return null
+    }
+    const user = this.jwtService.verify(access, {secret: 'secret2'})
+    const user_db = await this.userService.findById(user._id)
+    return user_db
+  }
 }

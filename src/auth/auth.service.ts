@@ -79,7 +79,7 @@ export class AuthService {
         
     }
   }
-  private async validateUser(userDto: CreateUserDto) {
+  private async validateUser(userDto: {username: string, password: string}) {
     const user = await this.userService.findByUsername(userDto.username);
     if (!user) throw new UnauthorizedException({message: 'Некорректный никнейм или пароль'})
     const passwordEquals = await bcrypt.compare(userDto.password, user.password);
