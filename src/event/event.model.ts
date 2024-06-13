@@ -22,14 +22,14 @@ export class Event {
   imageURL: string
 
   @Prop(raw({
-    monday: [{startDate: Date, endDate: Date}], 
-    tuesday: [{startDate: Date, endDate: Date}], 
-    wednesday: [{startDate: Date, endDate: Date}], 
-    thursday: [{startDate: Date, endDate: Date}], 
-    friday: [{startDate: Date, endDate: Date}], 
-    saturday: [{startDate: Date, endDate: Date}], 
-    sunday: [{startDate: Date, endDate: Date}]}))
-  days: Record<'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday', [{startDate: Date, endDate: Date}]>
+    monday: [{startDate: String, endDate: String, totalSpace: Number, peopleCount: Number}], 
+    tuesday: [{startDate: String, endDate: String, totalSpace: Number, peopleCount: Number}], 
+    wednesday: [{startDate: String, endDate: String, totalSpace: Number, peopleCount: Number}], 
+    thursday: [{startDate: String, endDate: String, totalSpace: Number, peopleCount: Number}], 
+    friday: [{startDate: String, endDate: String, totalSpace: Number, peopleCount: Number}], 
+    saturday: [{startDate: String, endDate: String, totalSpace: Number, peopleCount: Number}], 
+    sunday: [{startDate: String, endDate: String, totalSpace: Number, peopleCount: Number}]}))
+  days: Record<'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday', [{startDate: string, endDate: string, totalSpace: number, peopleCount: number}]>
   @Prop()
   price: string
 

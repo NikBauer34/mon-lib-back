@@ -16,7 +16,7 @@ import { MuseumModule } from './museum/museum.module';
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`
     }),
-    MongooseModule.forRoot(`mongodb://127.0.0.1:27017/nest_tutoriale`),
+    MongooseModule.forRoot(`mongodb://127.0.0.1:27017/nest_tutorialei`),
     TokenModule,
     UserModule,
     AuthModule,
