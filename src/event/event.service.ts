@@ -143,4 +143,10 @@ export class EventService {
     const user_db = await this.userService.findById(user._id)
     return user_db
   }
+  async addOrder(event_id: Types.ObjectId, order_id: Types.ObjectId) {
+    const event = await this.eventModel.findById(event_id)
+    event.orders.push(order_id)
+    await event.save()
+    return event
+  }
 }

@@ -19,10 +19,12 @@ export class OrderService {
   }
   async create(dto: CreateOrderDto) {
     const order = await this.orderModel.create(dto)
+    const event = await this.eventService.addOrder(dto.event, order._id)
     return order
   }
   async findById(_id: Types.ObjectId) {
     const order = await this.orderModel.findById(_id)
+
     return order
   }
   async getOrdersByUser(userId: Types.ObjectId, limit: number, page: number) {

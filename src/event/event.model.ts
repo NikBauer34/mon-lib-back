@@ -44,5 +44,8 @@ export class Event {
 
   @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Museum'})
   organizer: Types.ObjectId
+
+  @Prop([{type: mongoose.Schema.Types.ObjectId, ref: 'Order', default: []}])
+  orders: Types.ObjectId[]
 }
 export const EventSchema = SchemaFactory.createForClass(Event)
