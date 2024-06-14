@@ -4,6 +4,7 @@ import { BucketController } from './bucket.controller';
 
 @Module({
   providers: [BucketService],
-  controllers: [BucketController]
+  controllers: [BucketController],
+  exports: [BucketService]
 })
 export class BucketModule {}

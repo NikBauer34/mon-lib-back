@@ -112,8 +112,14 @@ export class EventService {
     console.log(eventsCount)
     return {data: events, totalPages: Math.ceil(eventsCount/limit)}
   }
-  async upload(buffer: Buffer, name: string) {
-    console.log('upl')
+  async getEventsByMuseum(access: string, searchString: string) {
+    const lib = this.jwtService.verify(access, {secret: 'secret2'})
+    const museum = await this.museumService.findById(lib._id)
+    const conditions = {organizer: museum._id}
+    const events = await this.eventModel.find(conditions)
+      .sort({ createdAt: 'desc' })
+      .where('title').regex(searchString)
+    return events
   }
   async getLatest(museum_title: string, limit: number, page: number, regex: string) {
     const museum = await this.museumService.findByTitle(museum_title)

@@ -27,6 +27,7 @@ export class Museum {
 
   @Prop([{type: mongoose.Schema.Types.ObjectId, ref: 'Event'}])
   events: Types.ObjectId[]
+  
 }
 
 export const MuseumSchema = SchemaFactory.createForClass(Museum)

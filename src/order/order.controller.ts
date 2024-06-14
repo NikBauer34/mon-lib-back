@@ -2,7 +2,8 @@ import { Body, Controller, Post, Headers } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/createOrder.dto';
 import { Types } from 'mongoose';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('Заказы')
 @Controller('order')
 export class OrderController {
   constructor(private orderService: OrderService,
@@ -25,5 +26,9 @@ export class OrderController {
   @Post('is-subscribed')
   isSubscribed(@Body() dto: {eventId: Types.ObjectId}, @Headers() headers: Record<string, string>) {
     return this.orderService.isSubscribed(dto.eventId, headers.authorization)
+  }
+  @Post('get-excel-tables')
+  getExcelTables(@Body() dto: {eventId: Types.ObjectId}) {
+    return this.orderService.getExcelTables(dto.eventId)
   }
 }

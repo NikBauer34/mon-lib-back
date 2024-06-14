@@ -27,4 +27,15 @@ export class BucketService {
     if (upload instanceof Array) return {file_path: upload[0].Location}
     return {file_path: upload.Location}
   }
+  async uploadTable(buffer: Buffer) {
+    let upload = await this.s3.Upload(
+      {
+        buffer: buffer
+      },
+      '/test/'
+    )
+    if (!upload) throw new HttpException('Не удалось загрузить файл', HttpStatus.BAD_REQUEST)
+    if (upload instanceof Array) return {file_path: upload[0].Location}
+    return {file_path: upload.Location}
+  }
 }

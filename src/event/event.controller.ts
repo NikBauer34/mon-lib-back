@@ -3,7 +3,8 @@ import { EventService } from './event.service';
 import { CreateEventDto } from './dto/createEvent.dto';
 import { Types } from 'mongoose';
 import { FileInterceptor } from '@nestjs/platform-express';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('События')
 @Controller('event')
 export class EventController {
   constructor(private eventService: EventService) {}
@@ -60,5 +61,9 @@ export class EventController {
   getLatest(@Body() dto: {museum: string,  page: string, limit: number, regex: string}) {
     console.log(dto)
     return this.eventService.getLatest(dto.museum, dto.limit, Number(dto.page), dto.regex)
+  }
+  @Post('/get-by-museum')
+  getByMuseum(@Body()dto: {searchString: string}, @Headers() headers: Record<string, string>) {
+    return this.eventService.getEventsByMuseum(headers.authorization, dto.searchString)
   }
 }

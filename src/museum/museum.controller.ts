@@ -1,7 +1,8 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { MuseumService } from './museum.service';
 import { CreateMuseumDto } from './dto/CreateMuseum.dto';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('Музей')
 @Controller('museum')
 export class MuseumController {
   constructor(private museumService: MuseumService) {}

@@ -3,7 +3,9 @@ import { CategoryService } from './category.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateCategoryDto } from './dto/createCategory.dto';
 import { Types } from 'mongoose';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Категории')
 @Controller('category')
 export class CategoryController {
   constructor(private categoryService: CategoryService) {}
