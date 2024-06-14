@@ -145,6 +145,7 @@ export class EventService {
   }
   async addOrder(event_id: Types.ObjectId, order_id: Types.ObjectId) {
     const event = await this.eventModel.findById(event_id)
+    console.log(event)
     event.orders.push(order_id)
     await event.save()
     return event
